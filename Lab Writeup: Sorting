@@ -160,21 +160,108 @@ have a better average run time, especially for decending arrays.
 
 -----------------------------Quicksort approach 2 -----------------------------
 
-18. 
+18. In this quicksort approach, we wish to maintain that the first element is 
+our partition element, the section from a[first+1] ... a[left-1] is populated
+with elements <= a[first], the section a[left] ... a[right-1] is >= a[first], 
+and the section a[right] ... a[last] is unprocessed. When we being processing, 
+we see that the 'then' condition of the if statement maintains the right 2
+segments--if the value is classified to belong in the middle section 
+(val > a[first]), then we simply increase the size of the middle portion to 
+include that element. The else clause maintains the above invariant because
+if the value is determined to belong in the first section (ie is less than
+a[first]), then we place the first unprocessed element in the left section
+by swapping it with the lowest right value. Since we have added a value to
+the left section, we increment the boundary of left, and since we retain the 
+values in right by moving the (previously) first to the last, we also increment
+right.
+
+19. The code swaps a[first] with a[left-1] because a[left] is infact the first
+element in the right (greater than pivot) section. We want a[first] to be
+swapped so that everything to the right is larger and everything to the left is
+less than or equal to.
+
+20. The loop gaurd for this version is right<=last because when our right index
+has moved beyond the bounds of the array, we know we have processed every
+element. Recall this is because everything to the left of a[right] has been
+processed, and so a[right] is in fact the first unprocessed element.
+
+21. The first recursive call uses left-2 as the right bound because we have just
+swapped the pivot element into left-1, thus left-2 is the rightmost index of 
+the lefthand side of the array. The second recursive call uses left as its 
+leftmost index because a[left] is defined as the first element in the right
+section (section of values larger than partition).
 
 
 22.
-a) Considering Loop Invariant 1 and the following array segment:
+a) Considering Loop Invariant 2 and the following array segment:
 
-  0 1  2 3  4 5 6  7  8 9 10 11 12
+  0 1  2 3  4 5 6  7  8 9  10 11 12
 [10 6 16 8 14 2 4 18 12 13 1  5  20]
+-> We begin with left and right at 1, choose a random partition element, 
+swap it into index 0 in array, and proceed with partitioning. Assuming we chose
+10 as our partition element, sice a[right] = 6 < 10 the if 
+statement fails and we swap a[left] and a[right] (same element) and increment 
+both indicies. Now the if condition is true (a[right] = 16 > a[first]= 10) and 
+so we increment right. Now the if condition fails and we swap left and right and
+increment both indicies. Now we have [10 6 8 16 14 2 4 18 12 13 1  5  20]
+Two more times the if condition is true (a[right] = 16 > 10, a[right] = 14 > 10) 
+so we increment right twice. Now the if condition fails, we swap left and right
+(left = 3, right = 5) and increment both left and right to obtain 
+[10 6 8 2 14 16 4 18 12 13 1 5 20]. Again perform swap step to obtain
+[10 6 8 2 4 16 14 18 12 13 1 5 20]. Now three more times the if condition is 
+true (a[right] = 18 < 10, a[right] = 12 < 10, a[right] = 13) so we increment
+right 3 times. Now when right = 10 and left = 5 we swap 16 and 1 to get
+[10 6 8 2 4 1 14 18 12 13 16 5 20]. Increment the indicies, the if statement
+fails, and we swap a[left] = 14 and a[right] = 5 to get  
+[10 6 8 2 4 1 5 18 12 13 16 14 20]. Both indicies are incremented and one final
+test of the if statement results in a final incrementation of right. Now 
+left = 7 and right = 13. Because right > last, we break out of the while loop
+and perform the last swap of the pivot into place. a[left-1] is the last element
+in the section designated < pivot, and so this is the index we want to swap with
+the pivot. Final partitioned array:
+[5 6 8 2 4 1 10 18 12 13 16 14 20]
 
 b) Given an array in ascending order:
   0 1 2 3 4
 [ 1 2 3 4 5]
+We choose a random partion element (in this case 4) and swap it to the beginning
+of the array. We now have [4 2 3 1 5], and left and right are both 1.
+a[right] = 2 < 4 so the if statment fails and we swap right and left and 
+increment both indicies. Now a[right] = 3 < 4 so we swap 3 with itself and 
+increment both indicies. Now a[right] = 1 < 4 so we swap 1 with itself and
+increment both counters. Now a[right] = 5 > 4 so we increment right. Now right
+is 5 and left is 4. We break out of the while loop and swap the partition 
+element into a[left-1] this gives partitioned array : [1 2 3 4 5]
+
 
 c) Given an array in decending order:
  0 1 2 3
 [4 3 2 1]
+We choose a random partition element (in this case 3) and swap it to the 
+beginning of the array: [3 4 2 1]. Right and left are both 1 and so the 
+conditional passes and we increment right (because a[right] = 4 >3 ). Now we
+swap left and right and increment both indicies to get [3 2 4 1]. The
+conditional fails and we swap left and right to get [3 2 1 4]. Both indicies
+are incremented and now right = 4 and we break out of the while loop. We swap
+the partition element into its place at a[left-1] to get [1 2 3 4].
 
+---------------------Analysis and Timing--------------------------------------
+
+24. 
+Best case: the array is already sorted in ascending order:
+
+
+
+
+27. 
+/** note to kieran 
+code: Each of the code segments have been inserted and commented out in the
+SortShell5 program. Just choose which type of data you want and un-comment that
+section.
+Since it suggests to split this up I propose I run the long tests (n=160000 and 
+80000) and you do the three others, and we will put together a table.
+
+30. 
+-> (?) The refined quicksort--because of the random choice of pivot--ought to
+ perform with the same efficiency on all types of data. 
 

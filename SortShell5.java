@@ -114,6 +114,13 @@ private static void refQuicksortKernel (int [] a, int first, int last) {
 public static void main (String [] args) 
     throws Exception {
 
+    long start_time;
+    long end_time;
+
+    start_time = System.currentTimeMillis();
+    // the call insertionSort (c); goes here 
+    end_time = System.currentTimeMillis();
+
     // declarations: two arrays and I/O;
     int size = 12;
     int [] c = new int [size];
@@ -128,8 +135,17 @@ public static void main (String [] args)
     out.println ("Please enter " + size + " integer values to sort,"
                  + " with each number on a separate line");
     for (int i = 0; i < size; i++) {
-        line = in.readLine();
-        c[i] = new Integer(line).intValue();
+
+        //line = in.readLine();
+        //c[i] = new Integer(line).intValue();
+        /* for ascending order data */
+        //c[i] = i;
+
+        /* for descending order */
+        //c[i] = -i;
+
+        /* for random order */
+        //c[i] = (int)(Math.random()*1000);
         d[i] = c[i];
         e[i] = c[i];
     }
@@ -154,6 +170,10 @@ public static void main (String [] args)
     for (int i = 0; i < size; i++) 
         out.print(e[i] + "\t");
     out.println();
+
+    out.println ("start:   " + start_time);
+    out.println ("end:     " + end_time);
+    out.println ("elapsed: " + (end_time - start_time));
 
 } // main
 } // SortShell4
