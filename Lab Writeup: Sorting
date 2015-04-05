@@ -1,0 +1,180 @@
+Lab Writeup: Sorting
+
+Renn Jervis and Kieran Connoly
+
+1-5, 8-14, 17-22, 24-25, 27-30.
+
+1. Considering the following array and k = 8 we have the following steps
+in an insertion sort:
+    0 1 2 3  4  5  6  7 
+  [ 3 7 9 10 18 27 33 37] i = 7 k = 8 a[item]=17
+
+-> Move through the array beginning with a[i] and shift elements right while
+a[i] is greater that 17. Thus we shift 37, 33, 27, and 18. Finally, a[Item] is
+inserted at index 4 as this is its correct place. Now we have 
+[ 3 7 9 10 17 18 27 33 37 ].
+
+2. Now considering the same situation but with a[item] = 40, we have:
+    0 1 2 3  4  5  6  7 
+  [ 3 7 9 10 18 27 33 37] i = 7 k = 8 a[item]=40
+
+  -> We move through the elements while a[i] is greater than 40 and shift things
+  left to make space for the insertion. In this case no elements are greater 
+  than 40, so our while loop does not move i. Thus we insert at a[i+1], in this
+  case at then end of the array. Now we have  [ 3 7 9 10 18 27 33 37 40 ].
+
+3. Now considering the same situation but with a[item] = 2, we have:
+    0 1 2 3  4  5  6  7 
+  [ 3 7 9 10 18 27 33 37] i = 7 k = 8 a[item]=2
+
+  -> In this case we move right through the array searching for an element that
+  is greater than a[item]. As we move we shift all elements to the right one 
+  place. As no elements in this array are smaller than 2, the deincrementing of 
+  i continues until we get shift the element at a[0] to a[1]. Since now i is -1
+  the while loop will not continue, and we insert a[item] at i+1 th index, in 
+  this case at index 0. Now we have [ 2 3 7 9 10 18 27 33 37].
+
+4. As we saw in problem 3, the test i>=0 ensures that we do not test indicies
+  outside of the range of the array, and also ensures that if we are inserting 
+  the smallest element, this element will be inserted at index 0.
+
+5. Insertion sort adds items in their corect place to an already sorted array.
+  We being by chosing a[1] to insert into the (necessarily) ordered segment
+  a[0]. Obviously, if a[1] > a[0] we insert it at the next index. If a[1] < a[0]
+  we slide a[0] into the previous position of a[1] and insert a[1]. This
+  processing continues for each element of the array. K is the index of the 
+  element such that a[0] ... a[k-1] is already ordered, a[item]= a[k] is the
+  item we are currently looking to insert and a[i] is the element we are 
+  currently comparing to a[item]. The while loop in the code determines the 
+  correct insertion position for each new element.
+
+7. Modify insertion sort so it sorts in decending order:
+
+public static void insertionSort (int [] a) {
+// method to sort using the insertion sort
+   for (int k = 1; k < a.length; k++) {
+      int item = a[k];
+      int i = k-1;
+      while ((i >= 0) && a[i] < item){
+         a[i+1] = a[i];
+         i--;
+      }
+      a[i+1] = item;
+   }
+} // insertionSort
+
+-> Simply change the while condition to a[i] < item.
+
+------------------------------Quicksort-------------------------------------
+8. Considering Loop Invariant 1 and the following array segment:
+
+  0 1  2 3  4 5 6  7  8 9 10 11 12
+[10 6 16 8 14 2 4 18 12 13 1  5  20]
+
+-> The element at index 0 will be our partition element, ie a[first]. The left
+variable will be initialized to 1 because a[left] = 6 is the first element we
+want to consider when searching for an element less that a[first]. The right
+variable will be initialized to 12, since that is the index of the last element
+we want to process. Right moves until it finds something that is smaller than 
+a[first] (in this case our first stop is at right = 11), and left continues 
+until it finds an element such that a[left] > a[item] (in this case our first 
+stop is at left = 2). We flip these elements and continue with processing. Our 
+next swap will be a[4] and a[10], because 14 > 10 and 1 < 10. We now have
+right = 10 and left = 4. The while loop will continue adjusting left and right
+until they are at positions right =6 and left = 7. Now we swap the partition 
+element into place by swapping the values a[first] with a[right]. This gives
+us the final segment 
+ 0 1 2 3 4 5 6  7  8  9  10  11  12
+[4 6 5 8 1 2 10 18 12 13 14  16  20].
+
+9. Given an array in ascending order:
+  0 1 2 3 4
+[ 1 2 3 4 5]
+We begin with a[first] as our partition element, right as 4 and left as 1. Right
+moves right until we find something such that a[right]<a[first]. Since this does 
+not ever happen, we move until right is at index 0. Left stays at its current 
+location because a[left] > a[first], but no swapping occurs because right <left.
+Thus no initial swapping occurs and we procede to move our partition element 
+into the right place. This swaps a[first] with a [right] (in this case 
+first == right) which changes nothing in this case.
+
+10. Given an array in decending order:
+ 0 1 2 3
+[4 3 2 1]
+-> We begin with the first = 0, and so our partition element is 4. Right is 3 
+and left is 1. Right seeks an element smaller that the pivot, and so does not
+need to be decremented. Right remains at 3 and left moves past 
+right (in search of a large entry) to index 4. We exit our while loop and swap
+the partition into its place, namely a[right]. This produced [1 3 2 4].
+
+11. If right is less than left, that means we have processed all of the elements
+and we ought to exit our while without completing any swaps. For example,
+consider array [5 1 2 4]. Right begins at 3 and left at 1. Since our partition 
+element is 5, right does not move since a[right] < pivot. Left searches for a 
+large element and in doing so moves past right (because it does not find one). 
+Now right < left, and left is outside the bounds of the array, so we definitly
+do not want to swap it's (mystery) value into the array!
+
+12. The code contains the check right>=left to enforce our loop invariant which
+says that we want to continue until all of the elements have been processed and
+everything to the right of a[right] is greater than or equal to a[first] and 
+similarly that everything to the left of a[left] is smaller than or equal to
+a[first]. Given the example array [4 6 5 8 1]:
+our partition element is 4, right is 4 and left is 1. Right moves until it 
+locates an element smaller than the partition, and so stays at 4. Left seeks a 
+value greater than 4 and also does not have to move. We swap a[right] and 
+a[left] and now have [4 1 5 8 6]. Right moves to find a small element and gets
+to index 1. Left is simply decremented by one. Now we have right = 1 and
+left = 2. If the loop exit conditiion were something else, we would keep moving 
+left and right and they would not end up in the correct position. The equals
+sign in the test is also important, for example if after some loop right and 
+left are equal, we have no gaurentees that the element they refer to is in 
+the correct place (we only know everything to the right of right is larger than
+the pivot and everything to the left is smaller), and so we must continue the
+loop until right has passed left and we can safely swap the pivot into its spot.
+
+13. The husk procedure provides slightly more information as to which portion
+of the array we are to consider because it gives us a right and a left bound
+for processing. This code uses the partitioning method utilized earlier to 
+recursively sort an array. It begins by partitioning the array with the initial 
+partition (ie puts the first elemet of the array into its correct location) and 
+then proceeds to recursivly partition smaller and smaller sections of each side
+to achieve a sorted array. The husk procedure is necessary if we want to work 
+with the original array each time; because our partition method uses the
+first element of the array given as the pivot element, we need a way to 
+specify which element we want to be the pivot and how much of the array we want
+to consider (in other words we need a top and bottom bound so our recursive
+call sorts a different portion of the array each time).
+
+14. The base case in the recursion arises when one element sections are being 
+partitioned. As we call quicksort on smaller and smaller sections of the array,
+eventually it will be called on a one-element section. When this happens, 
+first and last will be the same, and so right becomes left-1. Thus we skip the 
+while loop, swap the element with itself, and return. The recursive calls only
+porcede if we have more than 2 elements.
+
+
+17. Program ShellSort3 uses a random element for the partition element instead
+of the first element in the array. Statistically this probably means we will
+have a better average run time, especially for decending arrays.
+
+-----------------------------Quicksort approach 2 -----------------------------
+
+18. 
+
+
+22.
+a) Considering Loop Invariant 1 and the following array segment:
+
+  0 1  2 3  4 5 6  7  8 9 10 11 12
+[10 6 16 8 14 2 4 18 12 13 1  5  20]
+
+b) Given an array in ascending order:
+  0 1 2 3 4
+[ 1 2 3 4 5]
+
+c) Given an array in decending order:
+ 0 1 2 3
+[4 3 2 1]
+
+
