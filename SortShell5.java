@@ -117,12 +117,8 @@ public static void main (String [] args)
     long start_time;
     long end_time;
 
-    start_time = System.currentTimeMillis();
-    // the call insertionSort (c); goes here 
-    end_time = System.currentTimeMillis();
-
     // declarations: two arrays and I/O;
-    int size = 12;
+    int size = 10000;
     int [] c = new int [size];
     int [] d = new int [size];
     int [] e = new int [size];
@@ -138,6 +134,7 @@ public static void main (String [] args)
 
         //line = in.readLine();
         //c[i] = new Integer(line).intValue();
+
         /* for ascending order data */
         //c[i] = i;
 
@@ -145,27 +142,46 @@ public static void main (String [] args)
         //c[i] = -i;
 
         /* for random order */
-        //c[i] = (int)(Math.random()*1000);
+        c[i] = (int)(Math.random()*1000);
+
         d[i] = c[i];
         e[i] = c[i];
     }
 
     // sort and print first array
+
+    start_time = System.currentTimeMillis();
     insertionSort (c);
+    end_time = System.currentTimeMillis();
     out.println ("Result of Insertion Sort:");
     for (int i = 0; i < size; i++) 
         out.print(c[i] + "\t");
     out.println();
 
-    // sort and print first array
+    out.println ("start:   " + start_time);
+    out.println ("end:     " + end_time);
+    out.println ("elapsed: " + (end_time - start_time));
+
+
+    // sort and print second array
+    start_time = System.currentTimeMillis();
     quicksort (d);
+    end_time = System.currentTimeMillis();
+  
     out.println ("Result of Quicksort:");
     for (int i = 0; i < size; i++) 
         out.print(d[i] + "\t");
     out.println();
 
-    // sort and print first array
+    out.println ("start:   " + start_time);
+    out.println ("end:     " + end_time);
+    out.println ("elapsed: " + (end_time - start_time));
+
+
+    // sort and print third array
+     start_time = System.currentTimeMillis();
     refQuicksort (e);
+    end_time = System.currentTimeMillis();
     out.println ("Result of Refined Quicksort:");
     for (int i = 0; i < size; i++) 
         out.print(e[i] + "\t");

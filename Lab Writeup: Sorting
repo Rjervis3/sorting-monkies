@@ -248,7 +248,23 @@ the partition element into its place at a[left-1] to get [1 2 3 4].
 ---------------------Analysis and Timing--------------------------------------
 
 24. 
-Best case: the array is already sorted in ascending order:
+-> Consider that the first partition divides the array into 2 sections. If the
+pivot index is m and the first and last elements are i and j respectively, then
+we have T(n) (time to sort n els) = T(m) + T(n-m)
+
+The absolute worst case of quicksort is when we choose the smallest (or largest)
+partition element each time. We partition the array into 2 sections, 1 with 1 
+value and the other with the remaining n-1 values. Sorting this invovles O(n)
+recursive calls. This case has O(n^2) but is very unlikely given the
+randomization of our pivot choice.
+
+The worst case is when the pivot is the smallest (or largest) element in the 
+array. This is because we have one section of the array with n-1 elements to 
+sort recursively. If the rest of the recusions perform averagely
+
+The best case is when the pivot chosen is the median. Both sides are the
+same size and we sort them recursively. T(n) = 2 times the amount of time
+it takes to sort half the array T(n/2).
 
 
 
@@ -264,4 +280,9 @@ Since it suggests to split this up I propose I run the long tests (n=160000 and
 30. 
 -> (?) The refined quicksort--because of the random choice of pivot--ought to
  perform with the same efficiency on all types of data. 
+
+          Ascending data      Random Data         Descending Data
+ 10000          0                  
+ 20000          0
+ 40000          0
 
