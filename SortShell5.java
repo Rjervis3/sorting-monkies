@@ -118,7 +118,7 @@ public static void main (String [] args)
     long end_time;
 
     // declarations: two arrays and I/O;
-    int size = 10000;
+    int size = 160000;
     int [] c = new int [size];
     int [] d = new int [size];
     int [] e = new int [size];
@@ -132,8 +132,9 @@ public static void main (String [] args)
                  + " with each number on a separate line");
     for (int i = 0; i < size; i++) {
 
-        //line = in.readLine();
-        //c[i] = new Integer(line).intValue();
+        /* for user entered data */
+        line = in.readLine();
+        c[i] = new Integer(line).intValue();
 
         /* for ascending order data */
         //c[i] = i;
@@ -142,7 +143,7 @@ public static void main (String [] args)
         //c[i] = -i;
 
         /* for random order */
-        c[i] = (int)(Math.random()*1000);
+        //c[i] = (int)(Math.random()*1000);
 
         d[i] = c[i];
         e[i] = c[i];
@@ -154,8 +155,8 @@ public static void main (String [] args)
     insertionSort (c);
     end_time = System.currentTimeMillis();
     out.println ("Result of Insertion Sort:");
-    for (int i = 0; i < size; i++) 
-        out.print(c[i] + "\t");
+    //for (int i = 0; i < size; i++) 
+    //    out.print(c[i] + "\t");
     out.println();
 
     out.println ("start:   " + start_time);
@@ -169,8 +170,8 @@ public static void main (String [] args)
     end_time = System.currentTimeMillis();
   
     out.println ("Result of Quicksort:");
-    for (int i = 0; i < size; i++) 
-        out.print(d[i] + "\t");
+    //for (int i = 0; i < size; i++) 
+     //   out.print(d[i] + "\t");
     out.println();
 
     out.println ("start:   " + start_time);
@@ -183,8 +184,8 @@ public static void main (String [] args)
     refQuicksort (e);
     end_time = System.currentTimeMillis();
     out.println ("Result of Refined Quicksort:");
-    for (int i = 0; i < size; i++) 
-        out.print(e[i] + "\t");
+    //for (int i = 0; i < size; i++) 
+    //    out.print(e[i] + "\t");
     out.println();
 
     out.println ("start:   " + start_time);

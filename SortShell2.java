@@ -17,10 +17,10 @@ private static void quicksortKernel (int [] a, int first, int last) {
 
     while (right >= left) {
         // search left to find small array item
-        while ((right >= left) && (a[first] <= a[right]))
+        while ((right >= left) && (a[first] >= a[right]))
             right--;
         // search right to find large array item
-        while ((right >= left) && (a[first] >= a[left]))
+        while ((right >= left) && (a[first] <= a[left]))
             left++;
         // swap large left item and small right item, if needed
         if (right > left) {

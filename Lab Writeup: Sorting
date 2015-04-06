@@ -7,7 +7,7 @@ Renn Jervis and Kieran Connoly
 1. Considering the following array and k = 8 we have the following steps
 in an insertion sort:
     0 1 2 3  4  5  6  7 
-  [ 3 7 9 10 18 27 33 37] i = 7 k = 8 a[item]=17
+  [ 3 7 9 10 18 27 33 37] , i = 7, k = 8, a[item]=17
 
 -> Move through the array beginning with a[i] and shift elements right while
 a[i] is greater that 17. Thus we shift 37, 33, 27, and 18. Finally, a[Item] is
@@ -19,7 +19,7 @@ inserted at index 4 as this is its correct place. Now we have
   [ 3 7 9 10 18 27 33 37] i = 7 k = 8 a[item]=40
 
   -> We move through the elements while a[i] is greater than 40 and shift things
-  left to make space for the insertion. In this case no elements are greater 
+  right to make space for the insertion. In this case no elements are greater 
   than 40, so our while loop does not move i. Thus we insert at a[i+1], in this
   case at then end of the array. Now we have  [ 3 7 9 10 18 27 33 37 40 ].
 
@@ -27,10 +27,10 @@ inserted at index 4 as this is its correct place. Now we have
     0 1 2 3  4  5  6  7 
   [ 3 7 9 10 18 27 33 37] i = 7 k = 8 a[item]=2
 
-  -> In this case we move right through the array searching for an element that
-  is greater than a[item]. As we move we shift all elements to the right one 
+  -> In this case we move left through the array searching for an element that
+  is less than a[item]. As we search we shift all elements to the right one 
   place. As no elements in this array are smaller than 2, the deincrementing of 
-  i continues until we get shift the element at a[0] to a[1]. Since now i is -1
+  i continues until we shift the element at a[0] to a[1]. Since now i is -1
   the while loop will not continue, and we insert a[item] at i+1 th index, in 
   this case at index 0. Now we have [ 2 3 7 9 10 18 27 33 37].
 
@@ -39,13 +39,14 @@ inserted at index 4 as this is its correct place. Now we have
   the smallest element, this element will be inserted at index 0.
 
 5. Insertion sort adds items in their corect place to an already sorted array.
-  We being by chosing a[1] to insert into the (necessarily) ordered segment
-  a[0]. Obviously, if a[1] > a[0] we insert it at the next index. If a[1] < a[0]
-  we slide a[0] into the previous position of a[1] and insert a[1]. This
-  processing continues for each element of the array. K is the index of the 
-  element such that a[0] ... a[k-1] is already ordered, a[item]= a[k] is the
-  item we are currently looking to insert and a[i] is the element we are 
-  currently comparing to a[item]. The while loop in the code determines the 
+  We being by chosing a[k] to insert into the (necessarily) ordered segment
+  a[0]. Obviously, if a[k] > a[k-1] we insert it at the next index. If 
+  a[k] < a[k-1] we slide a[k] right and insert our element at a[i+1]. This
+  processing continues for each element to be inserted (we process the whole
+  array). K is the index of the element such that a[0] ... a[k-1] is already
+  ordered, a[item]= a[k] is the item we are currently looking to insert
+  into the ordered section, and a[i] is the element we are currently comparing 
+  to a[item]. The while loop in the code determines the 
   correct insertion position for each new element.
 
 7. Modify insertion sort so it sorts in decending order:
@@ -63,9 +64,27 @@ public static void insertionSort (int [] a) {
    }
 } // insertionSort
 
--> Simply change the while condition to a[i] < item.
+-> Simply change the while condition to a[i] < item. Tested with SortShell.java.
+ test run:
+
+Please enter 12 integer values to sort, with each number on a separate line
+5
+6
+3
+2
+4
+5
+7
+9
+2
+3
+4
+4
+Result of Insertion Sort:
+9 7 6 5 5 4 4 4 3 3 2 
 
 ------------------------------Quicksort-------------------------------------
+
 8. Considering Loop Invariant 1 and the following array segment:
 
   0 1  2 3  4 5 6  7  8 9 10 11 12
@@ -146,12 +165,61 @@ specify which element we want to be the pivot and how much of the array we want
 to consider (in other words we need a top and bottom bound so our recursive
 call sorts a different portion of the array each time).
 
+// (The husk procedure is necessary because we must start the procedure by
+specifying the array that we are sorting. This can only occur once, as we
+are operating recursively and must change these parameters in each
+recursive call, hence the husk.)
+
 14. The base case in the recursion arises when one element sections are being 
 partitioned. As we call quicksort on smaller and smaller sections of the array,
 eventually it will be called on a one-element section. When this happens, 
 first and last will be the same, and so right becomes left-1. Thus we skip the 
 while loop, swap the element with itself, and return. The recursive calls only
 porcede if we have more than 2 elements.
+
+
+//(Also true with two-element sections. 
+Another base case is where there are two elements. If we are passed two
+elements, left and right, the algorithm will sort them if unosrted or leave
+them alone if sorted. The two tests will fail. In the first case, right-1
+will be either less than or equal to first, and in the second case, right+1
+must be greater than or equal to last.  
+
+16. Modify quicksort to sort in decending order:
+
+ modify the inner while loop:
+ while (right >= left) {
+        // search left to find small array item
+        while ((right >= left) && (a[first] >= a[right]))
+            right--;
+        // search right to find large array item
+        while ((right >= left) && (a[first] <= a[left]))
+            left++;
+        // swap large left item and small right item, if needed
+        if (right > left) {
+            temp = a[left];
+            a[left] = a[right];
+            a[right] = temp;
+        }
+    }
+
+tested with ShellSort2.java:
+Test run example;
+Please enter 12 integer values to sort, with each number on a separate line
+4
+5
+6
+7
+8
+3
+5
+6
+7
+4
+2
+2
+Result of Quicksort:
+8 7 7 6 6 5 5 4 4 3 2 2
 
 
 17. Program ShellSort3 uses a random element for the partition element instead
@@ -255,34 +323,64 @@ we have T(n) (time to sort n els) = T(m) + T(n-m)
 The absolute worst case of quicksort is when we choose the smallest (or largest)
 partition element each time. We partition the array into 2 sections, 1 with 1 
 value and the other with the remaining n-1 values. Sorting this invovles O(n)
-recursive calls. This case has O(n^2) but is very unlikely given the
-randomization of our pivot choice.
+recursive calls as we sort the non empty segment. If we choose this worst case
+partition element each time this case has O(n^2). This is very unlikely given
+the randomization of our pivot choice.
 
-The worst case is when the pivot is the smallest (or largest) element in the 
-array. This is because we have one section of the array with n-1 elements to 
-sort recursively. If the rest of the recusions perform averagely
+The (other) bad cases are wwhen one or more choices of the pivot are the 
+smallest (or largest) element in the array. This is because we have one section
+of the array with n-1 elements to sort recursively. If the rest of the recusions
+perform averagely after one 'bad' choice of partition, we expect this to be 
+(nlogn)
 
 The best case is when the pivot chosen is the median. Both sides are the
 same size and we sort them recursively. T(n) = 2 times the amount of time
-it takes to sort half the array T(n/2).
+it takes to sort half the array T(n/2). If we continue to choose a number 
+close to the median pivot each time we expect the runtime to have 0()
+
+25. If each algortith requires t miliseconds to sort N items, we would expect
+that the algortihm would take t + ??? to sort 2N items. When we double
+the number of items
 
 
+27. Modified program SortShell5.java
 
-
-27. 
-/** note to kieran 
-code: Each of the code segments have been inserted and commented out in the
-SortShell5 program. Just choose which type of data you want and un-comment that
-section.
-Since it suggests to split this up I propose I run the long tests (n=160000 and 
-80000) and you do the three others, and we will put together a table.
-
-30. 
--> (?) The refined quicksort--because of the random choice of pivot--ought to
- perform with the same efficiency on all types of data. 
-
+ Insertion Sort
           Ascending data      Random Data         Descending Data
- 10000          0                  
- 20000          0
- 40000          0
+ 10000         1                   55                  105   
+ 20000         2                   203                 402  
+ 40000         3                   811                 1583   
+ 80000         3                   738                 1502
+ 160000        5                   3005                6012
+
+QuickSort
+          Ascending data      Random Data         Descending Data
+ 10000         22                  21                    15    
+ 20000         48                  37                    35   
+ 40000         64                  50                    40   
+ 80000         49                  24                    47
+ 160000        68                  77                    22
+
+RefQuickSort
+          Ascending data      Random Data         Descending Data
+ 10000          27                 22                    14
+ 20000          40                 38                    32   
+ 40000          52                 41                    39   
+ 80000          17                 45                    40
+ 160000         43                 55                    20
+
+
+28. Our data tabulation found results that seem consistant with our above
+analysis and the analysis of insertion sort in class. As we increased by 
+a factor of 2 the Intertion sort -- for ascending data, ---for random data, and
+--- for descending data. The quicksort has a slight outlier in the ascending 
+data in ?? and seems to handle all data types about the same. The refined 
+quciksort seems to comply with expected analysis ( ) and overall seemed to
+handle all types of data with similar time and performed well as we continued
+to double N.
+
+29. The alternate approach for the quicksort ---
+
+30. The refined quicksort--because of the random choice of pivot--ought to
+ perform with reasonably the same efficiency on all types of data. 
 
