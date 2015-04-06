@@ -2,6 +2,7 @@ Lab Writeup: Sorting
 
 Renn Jervis and Kieran Connoly
 
+problems:
 1-5, 8-14, 17-22, 24-25, 27-30.
 
 1. Considering the following array and k = 8 we have the following steps
@@ -165,25 +166,12 @@ specify which element we want to be the pivot and how much of the array we want
 to consider (in other words we need a top and bottom bound so our recursive
 call sorts a different portion of the array each time).
 
-// (The husk procedure is necessary because we must start the procedure by
-specifying the array that we are sorting. This can only occur once, as we
-are operating recursively and must change these parameters in each
-recursive call, hence the husk.)
-
 14. The base case in the recursion arises when one element sections are being 
 partitioned. As we call quicksort on smaller and smaller sections of the array,
 eventually it will be called on a one-element section. When this happens, 
 first and last will be the same, and so right becomes left-1. Thus we skip the 
 while loop, swap the element with itself, and return. The recursive calls only
 porcede if we have more than 2 elements.
-
-
-//(Also true with two-element sections. 
-Another base case is where there are two elements. If we are passed two
-elements, left and right, the algorithm will sort them if unosrted or leave
-them alone if sorted. The two tests will fail. In the first case, right-1
-will be either less than or equal to first, and in the second case, right+1
-must be greater than or equal to last.  
 
 16. Modify quicksort to sort in decending order:
 
@@ -318,7 +306,9 @@ the partition element into its place at a[left-1] to get [1 2 3 4].
 24. 
 -> Consider that the first partition divides the array into 2 sections. If the
 pivot index is m and the first and last elements are i and j respectively, then
-we have T(n) (time to sort n els) = T(m) + T(n-m)
+we have T(n) (time to sort n els) = T(m) + T(n-m). Each call to quicksort
+involves a partition and 2 recursive calls to quicksort (to sort either side
+of array). As we have seen partition has run time O(n).
 
 The absolute worst case of quicksort is when we choose the smallest (or largest)
 partition element each time. We partition the array into 2 sections, 1 with 1 
@@ -331,16 +321,17 @@ The (other) bad cases are wwhen one or more choices of the pivot are the
 smallest (or largest) element in the array. This is because we have one section
 of the array with n-1 elements to sort recursively. If the rest of the recusions
 perform averagely after one 'bad' choice of partition, we expect this to be 
-(nlogn)
+(nlogn).
 
 The best case is when the pivot chosen is the median. Both sides are the
 same size and we sort them recursively. T(n) = 2 times the amount of time
 it takes to sort half the array T(n/2). If we continue to choose a number 
-close to the median pivot each time we expect the runtime to have 0()
+close to the median pivot each time we expect the runtime to be
+T(n) = 2T(n/2) + P(n) where P is partition time. We then expect this case to
+have O(nlogn).
 
 25. If each algortith requires t miliseconds to sort N items, we would expect
-that the algortihm would take t + ??? to sort 2N items. When we double
-the number of items
+that the algortihm would take 2t + noise to sort 2N items. 
 
 
 27. Modified program SortShell5.java
@@ -371,15 +362,19 @@ RefQuickSort
 
 
 28. Our data tabulation found results that seem consistant with our above
-analysis and the analysis of insertion sort in class. As we increased by 
-a factor of 2 the Intertion sort -- for ascending data, ---for random data, and
---- for descending data. The quicksort has a slight outlier in the ascending 
-data in ?? and seems to handle all data types about the same. The refined 
-quciksort seems to comply with expected analysis ( ) and overall seemed to
-handle all types of data with similar time and performed well as we continued
-to double N.
+analysis and the analysis of insertion sort in class. As we increased expected,
+as we increase N by a factor of 2 the Intertion sort run time stays low for
+ascending data, increases dramatically for random data, and
+increases even more dramatically  for descending data. The quicksort has a
+slight outlier in the ascending data at N = 40000 and seems to handle ascending
+and random data types about the same. The refined 
+quciksort seems to comply with expected analysis (is faster than Quicksort) 
+and overall seemed to handle all types of data with similar time and performed
+well as we continued to double N.
 
-29. The alternate approach for the quicksort ---
+29. The alternate approach for the quicksort does not appear to affect the 
+run time significantly, we still perform increments or swaps when
+seeking to partition the array, and partition still has O(n).
 
 30. The refined quicksort--because of the random choice of pivot--ought to
  perform with reasonably the same efficiency on all types of data. 
